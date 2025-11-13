@@ -1,9 +1,5 @@
-use anyhow::Context;
 use clap::Parser;
-use serde::Deserialize;
-use std::fs;
 
-//-- ARG PARSING STRUCTS AND HELPERS --//
 #[derive(Parser, Debug)]
 #[command(
     author,
@@ -35,33 +31,4 @@ pub struct CliOps {
     /// Policy XML file to inject if binding SOAP has no policy
     #[arg(long)]
     pub policy: Option<String>,
-}
-
-//-- Config Processing --//
-#[derive(Debug, Deserialize)]
-pub struct ServiceCfg {
-    pub port_type: String,
-    pub operations: Vec<String>,
-    pub bindings: Option<Vec<String>>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Config {
-    #[serde(flatten)]
-    pub services: std::collections::HashMap<String, ServiceCfg>,
-}
-
-pub fn load_config(path: &str) -> Result<Config, anyhow::Error> {
-    let s = fs::read_to_string(path)?;
-    let cfg: Config = serde_json::from_str(&s)?;
-    Ok(cfg)
-}
-
-fn main() -> anyhow::Result<()> {
-    let cli = CliOps::parse();
-
-    let config = load_config(&cli.config)
-        .with_context(|| format!("Failed to load config: {}", cli.config))?;
-
-    Ok(())
 }

@@ -1,0 +1,15 @@
+{
+  "services": {
+    "Human_ResourcesService": {
+      "port_type": "bsvc:Human_ResourcesPortType",
+      "operations": [
+        "Change_Legal_Name",
+        "Add_Update_Organization",
+        "Change_Other_IDs"
+      ],
+      "bindings": [
+        "bsvc:Human_ResourcesBinding"
+      ]
+    }
+  }
+}
