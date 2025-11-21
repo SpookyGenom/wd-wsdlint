@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:wd-wsdl="urn:com.workday/bsvc/Integrations"
+	xmlns:wd="urn:com.workday/bsvc"
+	xmlns:nyw="urn:com.netyourwork/aod"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:httpbind="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:mimebind="http://schemas.xmlsoap.org/wsdl/mime/" name="Integrations" targetNamespace="urn:com.workday/bsvc/Integrations"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702">
+	<wsdl:documentation>This Web Service contains operations related to all Integrations within the Workday system.</wsdl:documentation>
+	<wsp:UsingPolicy wsdl:required="true"/>
+	<wsp:Policy wsu:Id="BN_BN_UsernameToken">
+		<saptrnbnd:OptimizedXMLTransfer uri="http://xml.sap.com/2006/11/esi/esp/binxml"
+			xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true"/>
+		<saptrnbnd:OptimizedXMLTransfer uri="http://www.w3.org/2004/08/soap/features/http-optimization"
+			xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true"/>
+		<sapattahnd:Enabled xmlns:sapattahnd="http://www.sap.com/710/features/attachment/">false</sapattahnd:Enabled>
+		<wsp:ExactlyOne xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+			<wsp:All>
+				<sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+					xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy"
+					xmlns:wsa="http://www.w3.org/2005/08/addressing"
+					xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
+					xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility"
+					xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+					<wsp:Policy>
+						<sp:TransportToken>
+							<wsp:Policy>
+								<sp:HttpsToken/>
+							</wsp:Policy>
+						</sp:TransportToken>
+						<sp:AlgorithmSuite>
+							<wsp:Policy>
+								<sp:TripleDesRsa15/>
+							</wsp:Policy>
+						</sp:AlgorithmSuite>
+						<sp:Layout>
+							<wsp:Policy>
+								<sp:Strict/>
+							</wsp:Policy>
+						</sp:Layout>
+						<sp:IncludeTimestamp/>
+					</wsp:Policy>
+				</sp:TransportBinding>
+				<sp:SupportingTokens xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702"
+					xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy"
+					xmlns:wsa="http://www.w3.org/2005/08/addressing"
+					xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
+					xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility"
+					xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+					<wsp:Policy>
+						<sp:UsernameToken sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702/IncludeToken/AlwaysToRecipient">
+							<wsp:Policy>
+								<sp:WssUsernameToken10/>
+							</wsp:Policy>
+						</sp:UsernameToken>
+					</wsp:Policy>
+				</sp:SupportingTokens>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	<wsdl:types>
+		<xsd:schema elementFormDefault="qualified" attributeFormDefault="qualified" targetNamespace="urn:com.workday/bsvc">
+			<xsd:element name="Validation_Fault" type="wd:Validation_FaultType"/>
+			<xsd:element name="Processing_Fault" type="wd:Processing_FaultType"/>
+			<xsd:element name="Authentication_Fault" type="wd:Authentication_FaultType"/>
+			<xsd:element name="Cancel_Business_Process_Request" type="wd:Cancel_Business_Process_RequestType"/>
+			<xsd:element name="Cancel_Business_Process_Response" type="wd:Cancel_Business_Process_ResponseType"/>
+			<xsd:element name="Rescind_Business_Process_Request" type="wd:Rescind_Business_Process_RequestType"/>
+			<xsd:element name="Rescind_Business_Process_Response" type="wd:Rescind_Business_Process_ResponseType"/>
+			<xsd:element name="Workday_Common_Header" type="wd:Workday_Common_HeaderType"/>
+			<xsd:attribute name="version" type="xsd:string" wd:fixed="v45.0"/>
+			<xsd:simpleType name="Action_EventReferenceEnumeration">
+				<xsd:restriction base="xsd:string">
+					<xsd:annotation>
+						<xsd:appinfo>
+							<wd:enumeration value="WID"/>
+							<wd:enumeration value="Absence_Case_ID"/>
+							<wd:enumeration value="Assign_Pay_Group_Event_ID"/>
+							<wd:enumeration value="Assignable_Payroll_ID"/>
+							<wd:enumeration value="Background_Check_ID"/>
+							<wd:enumeration value="Background_Process_Instance_ID"/>
+							<wd:enumeration value="Backorder_Event_ID"/>
+							<wd:enumeration value="Benefits_Billing_Reference_ID"/>
+							<wd:enumeration value="Budget_Amendment_ID"/>
+							<wd:enumeration value="Change_Base_Reference_ID"/>
+							<wd:enumeration value="Change_Order_Reference_ID"/>
+							<wd:enumeration value="Change_Spend_Category_Reference_ID"/>
+							<wd:enumeration value="Compensation_Review_Event_ID"/>
+							<wd:enumeration value="Complete_Action_Item_Event_ID"/>
+							<wd:enumeration value="Customer_Request_ID"/>
+							<wd:enumeration value="Customer_Request_Reference_ID"/>
+							<wd:enumeration value="Eligibility_Override_Event_ID"/>
+							<wd:enumeration value="Employee_Review_ID"/>
+							<wd:enumeration value="Employee_Severance_Worksheet_Event_ID"/>
+							<wd:enumeration value="Event_ID"/>
+							<wd:enumeration value="External_ID"/>
+							<wd:enumeration value="Flexible_Payment_And_Deduction_Event_ID"/>
+							<wd:enumeration value="Goods_Delivery_Group_ID"/>
+							<wd:enumeration value="Goods_Delivery_Run_ID"/>
+							<wd:enumeration value="Inventory_Par_Location_Change_Event_ID"/>
+							<wd:enumeration value="Invite_Committee_Candidate_Event_ID"/>
+							<wd:enumeration value="IRL_RPN_Submission_Event_Reference"/>
+							<wd:enumeration value="IRS_1099_MISC_Adjustment_ID"/>
+							<wd:enumeration value="Journal_Insights_Feedback_Event_Reference_ID"/>
+							<wd:enumeration value="Mass_Change_Requisition_Requester_ID"/>
+							<wd:enumeration value="Medicare_Information_Event_ID"/>
+							<wd:enumeration value="Par_Removal_ID"/>
+							<wd:enumeration value="Payroll_Reporting_Code_Event_ID"/>
+							<wd:enumeration value="Position_Budget_Group_ID"/>
+							<wd:enumeration value="Procurement_Document_Mass_Action_ID"/>
+							<wd:enumeration value="Procurement_Mass_ReOpen_ID"/>
+							<wd:enumeration value="Procurement_Roll_Forward_ID"/>
+							<wd:enumeration value="Proposed_New_Project_Resource_Plan_Detail_Reference_ID"/>
+							<wd:enumeration value="Purchase_Item_Event_Id"/>
+							<wd:enumeration value="Purchase_Item_Maintenance_Event_Id"/>
+							<wd:enumeration value="Purchase_Item_Request_Event_ID"/>
+							<wd:enumeration value="Quick_Issue_Reference_ID"/>
+							<wd:enumeration value="Recall_ID"/>
+							<wd:enumeration value="Recall_Reaction_ID"/>
+							<wd:enumeration value="Recall_Response_ID"/>
+							<wd:enumeration value="Receipt_Adjustment_Number"/>
+							<wd:enumeration value="Receipt_Number"/>
+							<wd:enumeration value="Request_Leave_of_Absence_Case_Number"/>
+							<wd:enumeration value="Request_Leave_of_Absence_ID"/>
+							<wd:enumeration value="Request_Payroll_Input_Event"/>
+							<wd:enumeration value="Requirement_Effective_Date_Override_Event_ID"/>
+							<wd:enumeration value="Requisition_Sourcing_Event_ID"/>
+							<wd:enumeration value="Spend_Authorization_ID"/>
+							<wd:enumeration value="Spend_Authorization_Mass_Close_ID"/>
+							<wd:enumeration value="Student_Dismissal_Event_ID"/>
+							<wd:enumeration value="Student_Employment_Eligibility_Event_ID"/>
+							<wd:enumeration value="Student_Hold_Assignment_Override_Event_ID"/>
+							<wd:enumeration value="Student_Institutional_Withdrawal_Event_ID"/>
+							<wd:enumeration value="Student_Leave_of_Absence_Event_ID"/>
+							<wd:enumeration value="Student_Onboarding_Event_Abstract_ID"/>
+							<wd:enumeration value="Supplier_Invoice_Contract_ID"/>
+							<wd:enumeration value="Update_Student_Hold_Event_ID"/>
+							<wd:enumeration value="Workday_Project_ID"/>
+							<wd:enumeration value="Worker_Time_Card_ID"/>
+						</xsd:appinfo>
+					</xsd:annotation>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:complexType name="Workday_Common_HeaderType">
+				<xsd:sequence>
+					<xsd:element name="Include_Reference_Descriptors_In_Response" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Validation_FaultType">
+				<xsd:sequence>
+					<xsd:element name="Validation_Error" type="wd:Validation_ErrorType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Processing_FaultType">
+				<xsd:sequence>
+					<xsd:element name="Detail_Message" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Validation_ErrorType">
+				<xsd:sequence>
+					<xsd:element name="Message" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="Detail_Message" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="Xpath" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Authentication_FaultType">
+				<xsd:sequence>
+					<xsd:element name="Code" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Action_EventObjectIDType">
+				<xsd:annotation>
+					<xsd:documentation>Contains a unique identifier for an instance of an object.</xsd:documentation>
+				</xsd:annotation>
+				<xsd:simpleContent>
+					<xsd:extension base="xsd:string">
+						<xsd:attribute name="type" type="wd:Action_EventReferenceEnumeration" use="required">
+							<xsd:annotation>
+								<xsd:documentation>The unique identifier type. Each "ID" for an instance of an object contains a type and a value. A single instance of an object can have multiple "ID" but only a single "ID" per "type".  Some "types" require a reference to a parent instance.</xsd:documentation>
+							</xsd:annotation>
+						</xsd:attribute>
+					</xsd:extension>
+				</xsd:simpleContent>
+			</xsd:complexType>
+			<xsd:complexType name="Action_EventObjectType">
+				<xsd:annotation wd:Is_Reference_ID="1"/>
+				<xsd:sequence>
+					<xsd:element name="ID" type="wd:Action_EventObjectIDType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+				<xsd:attribute name="Descriptor" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>Display information used to describe an instance of an object. This 'optional' information is for outbound descriptive purposes only and is not processed on inbound Workday Web Services requests.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:attribute>
+			</xsd:complexType>
+			<xsd:complexType name="Cancel_Business_Process_DataType">
+				<xsd:annotation>
+					<xsd:documentation>Provide additional details for the Business Process cancelation.</xsd:documentation>
+					<xsd:appinfo>
+						<wd:Validation>
+							<wd:Validation_Message>The field Comment is required and must have a value.</wd:Validation_Message>
+						</wd:Validation>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>Comment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Suppress_Notifications" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>Suppress Notifications</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Cancel_Business_Process_RequestType">
+				<xsd:annotation>
+					<xsd:documentation>Cancel Business Process Request</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Event_Reference" type="wd:Action_EventObjectType">
+						<xsd:annotation>
+							<xsd:documentation>Event Reference</xsd:documentation>
+							<xsd:appinfo>
+								<wd:Validation>
+									<wd:Validation_Message>Business Process awaiting participation step cannot be canceled via Web Service,  use Mass Cancel Business Processes task or Cancel related action off of the Event.</wd:Validation_Message>
+								</wd:Validation>
+								<wd:Validation>
+									<xsd:documentation>The provided event cannot be canceled via Web Service.</xsd:documentation>
+									<wd:Validation_Message>Business Process cannot be canceled via Web Service.</wd:Validation_Message>
+								</wd:Validation>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Cancel_Business_Process_Data" type="wd:Cancel_Business_Process_DataType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Cancel Business Process Data</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="wd:version"/>
+			</xsd:complexType>
+			<xsd:complexType name="Cancel_Business_Process_ResponseType">
+				<xsd:annotation>
+					<xsd:documentation>Cancel Business Process Response</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Event_Reference" type="wd:Action_EventObjectType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Event Reference</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="wd:version"/>
+			</xsd:complexType>
+			<xsd:complexType name="Rescind_Business_Process_DataType">
+				<xsd:annotation>
+					<xsd:documentation>Provide additional details for the Business Process rescind.</xsd:documentation>
+					<xsd:appinfo>
+						<wd:Validation>
+							<wd:Validation_Message>The field Comment is required and must have a value.</wd:Validation_Message>
+						</wd:Validation>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Comment" type="xsd:string" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>Comment</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Suppress_Notifications" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+						<xsd:annotation>
+							<xsd:documentation>Suppress Notifications</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="Rescind_Business_Process_RequestType">
+				<xsd:annotation>
+					<xsd:documentation>Rescind Business Process Request</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Event_Reference" type="wd:Action_EventObjectType">
+						<xsd:annotation>
+							<xsd:documentation>Event Reference</xsd:documentation>
+							<xsd:appinfo>
+								<wd:Validation>
+									<xsd:documentation>The provided event cannot be rescinded via Web Service.</xsd:documentation>
+									<wd:Validation_Message>Business Process cannot be rescinded via Web Service.</wd:Validation_Message>
+								</wd:Validation>
+								<wd:Validation>
+									<xsd:documentation>The provided event cannot be rescinded via Web Service.</xsd:documentation>
+									<wd:Validation_Message>[rescindMessage]</wd:Validation_Message>
+								</wd:Validation>
+							</xsd:appinfo>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="Rescind_Business_Process_Data" type="wd:Rescind_Business_Process_DataType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Rescind Business Process Data</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="wd:version"/>
+			</xsd:complexType>
+			<xsd:complexType name="Rescind_Business_Process_ResponseType">
+				<xsd:annotation>
+					<xsd:documentation>Rescind Business Process Response</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="Event_Reference" type="wd:Action_EventObjectType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>Event Reference</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+				<xsd:attribute ref="wd:version"/>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="Workday_Common_HeaderMsg">
+		<wsdl:part name="header" element="wd:Workday_Common_Header"/>
+	</wsdl:message>
+	<wsdl:message name="Cancel_Business_Process_RequestInputMsg">
+		<wsdl:part name="body" element="wd:Cancel_Business_Process_Request"/>
+	</wsdl:message>
+	<wsdl:message name="Rescind_Business_Process_RequestInputMsg">
+		<wsdl:part name="body" element="wd:Rescind_Business_Process_Request"/>
+	</wsdl:message>
+	<wsdl:message name="Validation_FaultMsg">
+		<wsdl:part name="body" element="wd:Validation_Fault"/>
+	</wsdl:message>
+	<wsdl:message name="Processing_FaultMsg">
+		<wsdl:part name="body" element="wd:Processing_Fault"/>
+	</wsdl:message>
+	<wsdl:message name="Authentication_FaultMsg">
+		<wsdl:part name="body" element="wd:Authentication_Fault"/>
+	</wsdl:message>
+	<wsdl:message name="Cancel_Business_Process_ResponseOutputMsg">
+		<wsdl:part name="body" element="wd:Cancel_Business_Process_Response"/>
+	</wsdl:message>
+	<wsdl:message name="Rescind_Business_Process_ResponseOutputMsg">
+		<wsdl:part name="body" element="wd:Rescind_Business_Process_Response"/>
+	</wsdl:message>
+	<wsdl:portType name="IntegrationsPort">
+		<wsdl:documentation>This Web Service contains operations related to all Integrations within the Workday system.</wsdl:documentation>
+		<wsdl:operation name="Cancel_Business_Process">
+			<wsdl:documentation>This operation cancels a business process, if cancelable, by the user<wd:contextualSecurity>Not Applicable</wd:contextualSecurity>
+			</wsdl:documentation>
+			<wsdl:input name="Cancel_Business_ProcessInput" message="wd-wsdl:Cancel_Business_Process_RequestInputMsg"/>
+			<wsdl:output name="Cancel_Business_ProcessOutput" message="wd-wsdl:Cancel_Business_Process_ResponseOutputMsg"/>
+			<wsdl:fault name="Validation_Fault" message="wd-wsdl:Validation_FaultMsg"/>
+			<wsdl:fault name="Processing_Fault" message="wd-wsdl:Processing_FaultMsg"/>
+			<wsdl:fault name="Authentication_Fault" message="wd-wsdl:Authentication_FaultMsg"/>
+		</wsdl:operation>
+		<wsdl:operation name="Rescind_Business_Process">
+			<wsdl:documentation>This operation rescinds a business process, if rescindable by the user<wd:contextualSecurity>Not Applicable</wd:contextualSecurity>
+			</wsdl:documentation>
+			<wsdl:input name="Rescind_Business_ProcessInput" message="wd-wsdl:Rescind_Business_Process_RequestInputMsg"/>
+			<wsdl:output name="Rescind_Business_ProcessOutput" message="wd-wsdl:Rescind_Business_Process_ResponseOutputMsg"/>
+			<wsdl:fault name="Validation_Fault" message="wd-wsdl:Validation_FaultMsg"/>
+			<wsdl:fault name="Processing_Fault" message="wd-wsdl:Processing_FaultMsg"/>
+			<wsdl:fault name="Authentication_Fault" message="wd-wsdl:Authentication_FaultMsg"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="IntegrationsBinding" type="wd-wsdl:IntegrationsPort">
+		<soapbind:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsp:Policy>
+			<wsp:PolicyReference URI="#BN_BN_UsernameToken"/>
+		</wsp:Policy>
+		<wsdl:operation name="Cancel_Business_Process">
+			<soapbind:operation style="document"/>
+			<wsdl:input name="Cancel_Business_ProcessInput">
+				<soapbind:body use="literal"/>
+				<soapbind:header message="wd-wsdl:Workday_Common_HeaderMsg" part="header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="Cancel_Business_ProcessOutput">
+				<soapbind:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Processing_Fault">
+				<soapbind:fault name="Processing_Fault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="Validation_Fault">
+				<soapbind:fault name="Validation_Fault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="Authentication_Fault">
+				<soapbind:fault name="Authentication_Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="Rescind_Business_Process">
+			<soapbind:operation style="document"/>
+			<wsdl:input name="Rescind_Business_ProcessInput">
+				<soapbind:body use="literal"/>
+				<soapbind:header message="wd-wsdl:Workday_Common_HeaderMsg" part="header" use="literal"/>
+			</wsdl:input>
+			<wsdl:output name="Rescind_Business_ProcessOutput">
+				<soapbind:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Processing_Fault">
+				<soapbind:fault name="Processing_Fault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="Validation_Fault">
+				<soapbind:fault name="Validation_Fault" use="literal"/>
+			</wsdl:fault>
+			<wsdl:fault name="Authentication_Fault">
+				<soapbind:fault name="Authentication_Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="IntegrationsService">
+		<wsdl:port name="Integrations" binding="wd-wsdl:IntegrationsBinding">
+			<soapbind:address location="https://[datacenter]/ccx/service/[tenant]/Integrations/v45.0"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

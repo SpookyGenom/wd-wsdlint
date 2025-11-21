@@ -1,0 +1,41 @@
+{
+    "wss": {
+        "Human_ResourcesService": {
+            "keep_operations": [
+                "Change_Legal_Name",
+                "Change_Other_IDs",
+                "Get_Change_Legal_Name",
+                "Get_Change_Other_IDs",
+                "Get_Workers"
+            ],
+            "policy_file": "username_token_policy.xml"
+        },
+        "IntegrationsService": {
+            "keep_operations": [
+                "Cancel_Business_Process",
+                "Rescind_Business_Process"
+            ],
+            "policy_file": "username_token_policy.xml"
+        },
+        "StaffingService": {
+            "keep_operations": [
+                "Change_Job",
+                "Change_Organization_Assignments",
+                "Close_Position",
+                "Contract_Contingent_Worker",
+                "Correct_Contract_Contingent_Worker",
+                "Create_Position",
+                "Edit_Worker_Additional_Data",
+                "End_Contingent_Worker_Contract",
+                "Get_Positions",
+                "Move_Workers_By_Organization"
+            ],
+            "policy_file": "username_token_policy.xml"
+        }
+    },
+    "tenants": {
+        "wdx-impl-services1.workday.com": "gms1",
+        "wdy-impl-services1.workday.com": "gms2",
+        "wdz-services1.myworkday.com": "gms"
+    }
+}
